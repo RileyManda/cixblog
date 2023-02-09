@@ -8,6 +8,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // import { Theme } from '../Theme';
 import Grid from '@mui/material/Grid';
@@ -84,16 +85,19 @@ const theme = createTheme({
 function Layout(props) {
   return (
     <>
-      <Header />
-      <Container maxWidth='lg'>
-        <Toolbar id='back-to-top-anchor' />
-        <ScrollTop {...props}>
-          <Fab size='small' aria-label='scroll back to top' color='secondary'>
-            <KeyboardArrowUpIcon />
-          </Fab>
-        </ScrollTop>
-        <div className='layout'>{props.children}</div>
-      </Container>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header />
+        <Container maxWidth='sm'>
+          <Toolbar id='back-to-top-anchor' />
+          <ScrollTop {...props}>
+            <Fab size='small' aria-label='scroll back to top' color='secondary'>
+              <KeyboardArrowUpIcon />
+            </Fab>
+          </ScrollTop>
+          <div className='layout'>{props.children}</div>
+        </Container>
+      </ThemeProvider>
     </>
   );
 }

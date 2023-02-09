@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import { useSession, getSession } from 'next-auth/react';
 import Layout from '../components/Layout';
 import { Typography,Card } from '@mui/material';
+import Grid, { gridClasses } from '@mui/material/Grid';
 import Post, { PostProps } from '../components/Post';
 import prisma from '../lib/prisma';
 
@@ -53,13 +54,17 @@ const Drafts: React.FC<Props> = (props) => {
         <Typography variant='h6' noWrap>
           Drafts
         </Typography>
-        <Card sx={{ minWidth: 275,maxWidth:275 }}>
-          {props.drafts.map((post) => (
-            <div key={post.id} className='post'>
-              <Post post={post} />
-            </div>
-          ))}
-        </Card>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <Card sx={{ minWidth: 275, maxWidth: 275 }}>
+              {props.drafts.map((post) => (
+                <div key={post.id} className='post'>
+                  <Post post={post} />
+                </div>
+              ))}
+            </Card>
+          </Grid>
+        </Grid>
       </div>
     </Layout>
   );

@@ -44,8 +44,7 @@ function Post({ post }) {
     <div>
       <Grid spacing={2}>
         <Grid item xs={6}>
-          <Card
-            sx={{ minWidth: 275 }}
+           <Card sx={{ minWidth: 275,maxWidth:275 }}
             onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
           >
             <CardMedia

@@ -68,7 +68,7 @@ const Post: React.FC<PostProps> = (props) => {
         <Typography variant='h6' noWrap>
           {title}
         </Typography>
-        <Card>
+        <Card sx={{ minWidth: 275,maxWidth:275 }}>
           <Typography variant='h6' noWrap>
             By {props?.author?.name || 'Unknown author'}
           </Typography>
@@ -78,8 +78,7 @@ const Post: React.FC<PostProps> = (props) => {
               size='large'
               aria-label='show 4 new mails'
               color='inherit'
-              onClick={() => publishPost(props.id)}
-            >
+              onClick={() => publishPost(props.id)}>
               <Publish sx={{ color: green[500] }} />
             </IconButton>
           )}
@@ -88,8 +87,7 @@ const Post: React.FC<PostProps> = (props) => {
               size='large'
               aria-label='show 4 new mails'
               color='inherit'
-              onClick={() => deletePost(props.id)}
-            >
+              onClick={() => deletePost(props.id)}>
               <Delete sx={{ color: red[500] }} />
             </IconButton>
           )}

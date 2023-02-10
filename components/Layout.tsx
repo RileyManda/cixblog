@@ -9,9 +9,8 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Footer from './footer';
 
-// import { Theme } from '../Theme';
-import Grid from '@mui/material/Grid';
 type Props = {
   children: ReactNode;
   window?: () => Window;
@@ -99,6 +98,7 @@ function Layout(props) {
           <div className='layout'>{props.children}</div>
         </Container>
       </ThemeProvider>
+      <Footer />
     </>
   );
 }

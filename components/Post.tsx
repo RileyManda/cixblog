@@ -14,7 +14,7 @@ import {
   CardMedia,
   CardContent,
   Paper,
-  CardActionArea
+  CardActionArea,
 } from '@mui/material';
 import { styled, Theme, createStyles } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,13 +24,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 
+
+
 export type PostProps = {
   id: string;
   title: string;
   author: {
     name: string;
     email: string;
-    createdAt: Date;
+    date: string;
   } | null;
   content: string;
   published: boolean;
@@ -52,21 +54,25 @@ export default function Post({ post }) {
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-  const theme = createTheme();
-let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
-let initials = [...authorName.matchAll(rgx)] || [];
-initials = (
-  (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
-).toUpperCase();
+
+  // const theme = createTheme();
+
+  let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+  let initials = [...authorName.matchAll(rgx)] || [];
+  initials = (
+    (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+  ).toUpperCase();
+
   return (
     <>
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <CardActionArea component='a' href='#'>
-            <Card
-              sx={{ minWidth: 200, maxWidth: 275 }}
-              onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
-            >
+          <CardActionArea
+            sx={{ minWidth: 200, maxWidth: 275 }}
+            component='a'
+            onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
+          >
+            <Card>
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }} aria-label='author'>
@@ -79,7 +85,7 @@ initials = (
                   </IconButton>
                 }
                 title={post.title}
-                subheader='September 14, 2016'
+                subheader='date'
               />
               <CardMedia
                 component='img'
@@ -90,7 +96,10 @@ initials = (
                 <Typography variant='h5' component='div'>
                   {post.title}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
+                <Typography
+                  sx={{ mb: 1.5 }}
+                  color='text.secondary'
+                  variant='subtitle1'>
                   <small>By {authorName}</small>
                 </Typography>
                 <Typography paragraph>

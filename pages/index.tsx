@@ -10,8 +10,20 @@ import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Container from '@mui/material/Container';
-import { Theme } from '../Theme';
-import Typography from '@mui/material/Typography';
+import {
+  Card,
+  CardActions,
+  Avatar,
+  IconButton,
+  Grid,
+  gridClasses,
+  CardHeader,
+  Typography,
+  Button,
+  CardMedia,
+  CardContent,
+  Paper,
+} from '@mui/material';
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -33,9 +45,6 @@ type Props = {
   window?: () => Window;
   children: React.ReactElement;
 };
-
-
-
 const Blog: React.FC<Props> = (props: Props) => {
   return (
     <Layout>
@@ -43,13 +52,14 @@ const Blog: React.FC<Props> = (props: Props) => {
         <Typography variant='h6' noWrap>
           Public Feed
         </Typography>
-
         <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className='post'>
-              <Post post={post} />
-            </div>
-          ))}
+          <Grid container spacing={4}>
+            {props.feed.map((post) => (
+              <div key={post.id} className='post'>
+                <Post post={post} />
+              </div>
+            ))}
+          </Grid>
         </main>
       </div>
     </Layout>

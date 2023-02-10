@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import ReactMarkdown from 'react-markdown';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { styled, Theme, createStyles, makeStyles } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
+import {
+  Card,
+  CardActions,
+  Avatar,
+  IconButton,
+  Grid,
+  gridClasses,
+  CardHeader,
+  Typography,
+  Button,
+  CardMedia,
+  CardContent,
+  Paper,
+  CardActionArea
+} from '@mui/material';
+import { styled, Theme, createStyles } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import ImagePlaceholder from '../assets/placeholder.jpg';
+import { red } from '@mui/material/colors';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
 
 export type PostProps = {
   id: string;
@@ -19,17 +30,21 @@ export type PostProps = {
   author: {
     name: string;
     email: string;
+    createdAt: Date;
   } | null;
   content: string;
   published: boolean;
 };
 
-function Post({ post }) {
+export default function Post({ post }) {
   const authorName = post.author ? post.author.name : 'Unknown author';
   const [spacing, setSpacing] = useState(2);
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const postDate = post.createdAt ? post.createdAt : 'date error';
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setSpacing(Number((event.target as HTMLInputElement).value));
-  };
+  }
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -37,40 +52,58 @@ function Post({ post }) {
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-  const jsx = `
-<Grid container spacing={${spacing}}>
-`;
+  const theme = createTheme();
+let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+let initials = [...authorName.matchAll(rgx)] || [];
+initials = (
+  (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+).toUpperCase();
   return (
-    <div>
-      <Grid spacing={2}>
-        <Grid item xs={6}>
-           <Card sx={{ minWidth: 275,maxWidth:275 }}
-            onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
-          >
-            <CardMedia
-              sx={{ height: 140 }}
-              image='/static/images/cards/contemplative-reptile.jpg'
-              title='green iguana'
-            />
-            <CardContent>
-              <Typography variant='h5' component='div'>
-                {post.title}
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-                <small>By {authorName}</small>
-              </Typography>
-              <Typography variant='body2'>
-                <ReactMarkdown children={post.content} />
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size='small'>Learn More</Button>
-            </CardActions>
-          </Card>
+    <>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <CardActionArea component='a' href='#'>
+            <Card
+              sx={{ minWidth: 200, maxWidth: 275 }}
+              onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
+            >
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label='author'>
+                    {initials}
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label='settings'>
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={post.title}
+                subheader='September 14, 2016'
+              />
+              <CardMedia
+                component='img'
+                height='194'
+                image='../assets/placeholder.jpg'
+              />
+              <CardContent>
+                <Typography variant='h5' component='div'>
+                  {post.title}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
+                  <small>By {authorName}</small>
+                </Typography>
+                <Typography paragraph>
+                  <ReactMarkdown children={post.content} />
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size='small'>Learn More</Button>
+              </CardActions>
+            </Card>
+          </CardActionArea>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
-
-export default Post;

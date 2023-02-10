@@ -14,12 +14,15 @@ import {
   CardMedia,
   CardContent,
   Paper,
+  CardActionArea
 } from '@mui/material';
 import { styled, Theme, createStyles } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import ImagePlaceholder from '../assets/placeholder.jpg';
 import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
 
 export type PostProps = {
   id: string;
@@ -49,49 +52,56 @@ export default function Post({ post }) {
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-
+  const theme = createTheme();
+let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+let initials = [...authorName.matchAll(rgx)] || [];
+initials = (
+  (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+).toUpperCase();
   return (
     <>
-      <Grid container spacing={2} direction='row'>
-        <Grid item xs={8}>
-          <Card
-            sx={{ minWidth: 200, maxWidth: 275 }}
-            onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
-          >
-            <CardHeader
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label='authot'>
-                  {authorName}
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label='settings'>
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title='Shrimp and Chorizo Paella'
-              subheader='September 14, 2016'
-            />
-            <CardMedia
-              component='img'
-              height='194'
-              image='../assets/placeholder.jpg'
-            />
-            <CardContent>
-              <Typography variant='h5' component='div'>
-                {post.title}
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-                <small>By {authorName}</small>
-              </Typography>
-              <Typography paragraph>
-                <ReactMarkdown children={post.content} />
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size='small'>Learn More</Button>
-            </CardActions>
-          </Card>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <CardActionArea component='a' href='#'>
+            <Card
+              sx={{ minWidth: 200, maxWidth: 275 }}
+              onClick={() => Router.push('/p/[id]', `/p/${post.id}`)}
+            >
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label='author'>
+                    {initials}
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label='settings'>
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={post.title}
+                subheader='September 14, 2016'
+              />
+              <CardMedia
+                component='img'
+                height='194'
+                image='../assets/placeholder.jpg'
+              />
+              <CardContent>
+                <Typography variant='h5' component='div'>
+                  {post.title}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
+                  <small>By {authorName}</small>
+                </Typography>
+                <Typography paragraph>
+                  <ReactMarkdown children={post.content} />
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size='small'>Learn More</Button>
+              </CardActions>
+            </Card>
+          </CardActionArea>
         </Grid>
       </Grid>
     </>

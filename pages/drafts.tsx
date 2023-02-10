@@ -11,9 +11,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { drafts: [] } };
+    return { props: { drafts: [] }};
   }
-
   const drafts = await prisma.post.findMany({
     where: {
       author: { email: session.user.email },
@@ -54,15 +53,13 @@ const Drafts: React.FC<Props> = (props) => {
         <Typography variant='h6' noWrap>
           Drafts
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Card sx={{ minWidth: 275, maxWidth: 275 }}>
-              {props.drafts.map((post) => (
-                <div key={post.id} className='post'>
-                  <Post post={post} />
-                </div>
-              ))}
-            </Card>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            {props.drafts.map((post) => (
+              <div key={post.id} className='post'>
+                <Post post={post} />
+              </div>
+            ))}
           </Grid>
         </Grid>
       </div>
